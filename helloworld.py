@@ -53,7 +53,7 @@ def main():
     try: draw_by_line()
     except BaseException as e:
         stdout.write( joinstr(
-                "\n\n\033[91m","\033[0m\n",sep=repr(e)
+                "\n\n\033[91m",repr(e),"\033[0m\n"
         ) )
 
     # Say hello to the cursor
