@@ -1,4 +1,5 @@
 '''
+Just a janky "Hello, World!" program.
                          ,,    ,,                                                    ,,     ,,      
 `7MMF'  `7MMF'         `7MM  `7MM                          db                        db     db    OO
   MM      MM             MM    MM                         ;MM:                                    88
@@ -9,6 +10,9 @@
 .JMML.  .JMML. `Mbmmd' .JMML..JMML. `Ybmd9'   dg     .AMA.   .AMMA.M9mmmP'  YMbmd' .JMML. .JMML.  db
                                               ,j                                                    
                                              ,'             Font: georgia11 from art module     
+
+Prints this text in a fancy & janky way. Uses ANSI to manupulate the cursor;
+may not work in every terminal.
 '''
 
 from sys import stdout
@@ -143,15 +147,17 @@ db
 '''
 ]
 
-
+# Maximum horizontal and vertical distances; used to move the cursor
 lastH = 0
 lastV = 0
 ESC = 0
 
 try:
+    # Hide cursor
     stdout.write("\033[?25l")
     for string in Letters:
-        ostr = iter(textwrap.indent(string,"\[\033[C"*lastH+"\]"))
+        # Indent the string; move it to the left as needed (\033[C means move left in ansi)
+        ostr = iter(textwrap.indent(string,"\[\033[%dC\]" % lastH))
         for c in ostr:
             if c == "\\":
                 c += next(ostr,"")
@@ -164,12 +170,14 @@ try:
             stdout.write(c)
             if not ESC:
                 stdout.flush()
-                sleep(randint(*speed_range)*.001)
+                sleep(randint(*speed_range)*.01)
 
         lastV = string.count("\n")
-        stdout.write("\033[A"*lastV)
+        # Move cursor up as needed
+        stdout.write("\033[%dA" % lastV)
         stdout.flush()
         lastH += len(max(string.splitlines(1),key=lambda x: len(x.replace("\n",""))))
 finally:
+    # Reset
     stdout.write("\033[?25h")
     stdout.write("\033[B"*lastV+"\n")

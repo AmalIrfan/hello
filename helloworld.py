@@ -16,7 +16,7 @@ Using latest technology from "art" module (not builtin).
 
 
 MSG         = "Hello, World!"
-FONT        = "georgia11"
+FONT        = "doom" # "georgia11"
 SPEED_RANGE = 1,20 # ms
 
 
